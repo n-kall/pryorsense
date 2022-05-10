@@ -1,0 +1,11 @@
+import arviz as az
+import numpy as np
+from arviz import InferenceData
+
+new_group = {
+    "log_prior": idata.log_likelihood.to_dict(),
+    "weights": {num: weight for num, weight in enumerate(range(100))}
+}
+idata.add_groups(new_group)
+
+

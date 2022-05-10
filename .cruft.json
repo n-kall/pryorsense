@@ -1,0 +1,18 @@
+{
+  "template": "https://github.com/woltapp/wolt-python-package-cookiecutter",
+  "commit": "c4f9ca4bd7fa5a1cb36bfceacdba48194de4120c",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "author_name": "Noa Kallioinen",
+      "author_email": "n-kall@github.com",
+      "github_username": "n-kall",
+      "project_name": "pryorsense",
+      "project_slug": "pryorsense",
+      "package_name": "pryorsense",
+      "project_short_description": "priorsense for python",
+      "_template": "https://github.com/woltapp/wolt-python-package-cookiecutter"
+    }
+  },
+  "directory": null
+}
