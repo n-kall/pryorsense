@@ -27,42 +27,14 @@ with pm.Model() as model:
         posterior_predictive=posterior_predictive
     )
 
-joint_log_lik = np.sum(pm_data.log_likelihood.stack(draws=("chain", "draw")).obs.values, axis = 0)
 
-alpha = 2
+def powerscale_lw(data, alpha, component):
 
-new_group = {
-    "powerscale":
-    {
-        "likelihood" : joint_log_lik,
-        "prior" : joint_log_lik
-    }
-}
-
-
-pm_data.add_groups(new_group)
-
-def powerscale_weights(data, alpha, component):
-
-    if (component is "likelihood"):
+    if (component == "likelihood"):
         ps = np.sum(pm_data["log_likelihood"].stack(draws = ("chain", "draw")).obs.values, axis = 0)
-    elif (component is "prior"):
+    elif (component == "prior"):
         ps = pm_data["log_prior"].stack(draws = ("chain", "draw")).values
     
-    w = (alpha - 1) * ps
+    lw = (alpha - 1) * ps
     
-    return w
-
-w = powerscale_weights(pm_data, 5, "likelihood")
-
-wps = az.psislw(w)
-
-mu = pm_data.posterior.stack(draws = ("chain", "draw")).mu.values
-
-base_mean = np.average(mu, axis = 0)
-scaled_mean = np.average(mu, weights = np.exp(wps), axis = 0)
-
-np.dot(mu, w)
-
-base_sd = np.sqrt(np.var(mu, axis = 0))
-scaled_sd = np.sqrt(np.average((mu-scaled_mean)**2, weights=np.exp(wps), axis = 0))
+    return lw
